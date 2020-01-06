@@ -12,9 +12,18 @@ app.get('/', (req, res) =>
     res.sendFile(HTML_FILE);
 })
 
+app.get('/dictionary', (req, res) =>
+{
+
+    const word = req.query.word;
+    res.json({word1: word+"1", word2: word+"2"});
+
+});
+
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => {
+app.listen(PORT, () => 
+{
     console.log(`App listening to ${PORT}....`);
     console.log('Press Ctrl+C to quit.');
 })
