@@ -35,9 +35,9 @@ const Counter = (props) =>
 
 const Letters = (props) =>
 {
-    const letters = props.data.map( ((currentValue, index, array) => {
+    const letters = props.data.map( (currentValue, index, array) => {
         return <input key={index} className="letter" onChange={(event) => props.handle(index,event)} value={props.data[index]}></input>
-    }))
+    });
 
     return(
         <div id="letters">
@@ -57,8 +57,10 @@ const Button = (props) =>
 
 const Words = (props) =>
 {
+const words = props.data.map( (currentValue, index, array) => { return <div key={index}>{currentValue}</div>})
     return(
         <div id="words">
+            {words}
         </div>
     )
 }

@@ -18,6 +18,8 @@ class App extends React.Component
         this.handleChangeLetter = this.handleChangeLetter.bind(this);
         this.handleChangeLetterNumb = this.handleChangeLetterNumb.bind(this);
         this.handleButton = this.handleButton.bind(this);
+
+        this.findWords = this.findWords.bind(this);
     }
 
     handleChangeLetterNumb(type)
@@ -58,12 +60,25 @@ class App extends React.Component
             tempArray[index] = event.target.value;
             this.props.submitSetLetters(tempArray);
         }
-        
+    }
+
+    async findWords(word)
+    {
+        const response = await fetch("http://localhost:8080/dictionary", 
+        {
+            headers: {"Content-type": "application/json; charset=UTF-8"},
+            method: "post", 
+            body: JSON.stringify(this.props.state.letters)
+        });
+        const data = await response.json();
+        console.log(data);
+        this.props.submitSetWords(data);
     }
 
     handleButton()
     {
         console.log("button was pushed");
+        this.findWords();
     }
 
     render()
@@ -75,7 +90,7 @@ class App extends React.Component
             <Counter handle={this.handleChangeLetterNumb} data={this.props.state.letters.length}/>
             <Letters handle={this.handleChangeLetter} data={this.props.state.letters} />
             <Button handle={this.handleButton} />
-            <Words />
+            <Words data={this.props.state.words}/>
             <Footer />
         </div>
         );
