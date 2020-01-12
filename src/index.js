@@ -7,7 +7,7 @@ import ReactDOM from "react-dom";
 import { Provider, connect } from 'react-redux'
 
 import {store, setLetterNumb, setWords, setLetters} from "./redux-store.js"
-import {Title, Desc, Letters, Button, Counter, Words, Footer} from "./interface.jsx"
+import {Panel, Desc, Letters, Button, Counter, Words} from "./interface.jsx"
 
 class App extends React.Component
 {
@@ -85,13 +85,17 @@ class App extends React.Component
     {
         return(
         <div id="container">
-            <Title />
-            <Desc />
-            <Counter handle={this.handleChangeLetterNumb} data={this.props.state.letters.length}/>
-            <Letters handle={this.handleChangeLetter} data={this.props.state.letters} />
-            <Button handle={this.handleButton} />
-            <Words data={this.props.state.words}/>
-            <Footer />
+            <div id="top">
+                <Panel />
+                <div id="main">
+                    <Desc />
+                    <Counter handle={this.handleChangeLetterNumb} data={this.props.state.letters.length}/>
+                    <Letters handle={this.handleChangeLetter} data={this.props.state.letters} />
+                    <Button handle={this.handleButton} />
+                </div>
+            </div>
+
+            <Words data={this.props.state.words} />
         </div>
         );
     }

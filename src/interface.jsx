@@ -4,20 +4,12 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Provider, connect } from 'react-redux'
 
-const Title = (props) =>
-{
-    return(
-        <div id="title">
-            <h1>Wyrazówka</h1>
-        </div>
-    )
-}
 
 const Desc = (props) =>
 {
     return(
         <div id="desc">
-            <h2>Wybierz ilość znaków a następnie wbrowadź wybrane litery i znajdź pasujące słowa w słowniku. </h2>
+            <div>Wybierz ilość znaków a następnie wbrowadź wybrane litery i znajdź pasujące słowa w słowniku. </div>
         </div>
     )
 }
@@ -26,9 +18,9 @@ const Counter = (props) =>
 {
     return(
         <div id="counter">
-            <button onClick={ () => props.handle("DECREASE")}>-</button>
-            <input readOnly value={props.data}></input>
-            <button onClick={ () => props.handle("INCREASE")}>+</button>
+            <button onClick={ () => props.handle("DECREASE")}>mniej</button>
+            {/*<input readOnly value={props.data}></input>*/}
+            <button onClick={ () => props.handle("INCREASE")}>więcej</button>
         </div>
     )
 }
@@ -50,7 +42,7 @@ const Button = (props) =>
 {
     return(
         <div id="button">
-            <button onClick={props.handle}>Znajdź wyrazy</button>
+            <button onClick={props.handle}>znajdź</button>
         </div>
     )
 }
@@ -59,18 +51,28 @@ const Words = (props) =>
 {
 const words = props.data.map( (currentValue, index, array) => { return <div key={index}>{currentValue}</div>})
     return(
-        <div id="words">
-            {words}
+        <div id="bottom">
+            <div id="words">
+                {words}
+            </div>
         </div>
     )
 }
 
-const Footer = (props) =>
+const Panel = (props) =>
 {
     return(
-        <div id="footer">
+        <div id="panel">
+            <div id="title">
+                <div>Wyrazówka</div>
+            </div>
+            <div id="links">
+                <div>linked</div>
+                <div>homepage</div>
+                <div>github</div>
+            </div>
         </div>
     )
 }
 
-export {Title, Desc, Letters, Button, Counter, Words, Footer}
+export {Desc, Letters, Button, Counter, Words, Panel}
