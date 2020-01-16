@@ -54,10 +54,12 @@ class App extends React.Component
 
     handleChangeLetter(index, event)
     {
-        if(event.target.value.length >= 0 && event.target.value.length < 2)
+        const reg = /[a-zA-Z]?/;
+        
+        if(event.target.value.length >= 0 && event.target.value.length < 2 && reg.test(event.target.value))
         {
             let tempArray = this.props.state.letters;
-            tempArray[index] = event.target.value;
+            tempArray[index] = event.target.value.toLowerCase();
             this.props.submitSetLetters(tempArray);
         }
     }
@@ -71,14 +73,17 @@ class App extends React.Component
             body: JSON.stringify(this.props.state.letters)
         });
         const data = await response.json();
-        console.log(data);
         this.props.submitSetWords(data);
     }
 
     handleButton()
     {
-        console.log("button was pushed");
-        this.findWords();
+        if(this.props.state.letters.join("").length !== 0)
+        {
+            this.findWords();
+            console.log("finding");
+
+        } 
     }
 
     render()

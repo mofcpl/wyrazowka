@@ -5,9 +5,6 @@ body
 {
     width: 100vw;
     height: 100vh;
-
-    box-sizing: border-box;
-
     padding: 0;
     margin: 0;
 
@@ -24,131 +21,52 @@ body
         width: 100%;
         height: 100%;
         
-
         >#top
         {
-
-            background-color: $color2;
-            color: $color3;
 
             display: grid;
             grid-template-rows: 1fr 8fr;
             grid-template-columns: 1fr;
 
-            height: 55%;
-
-            box-shadow: 0px 1px 5px black;
 
             >#panel
             {
                 grid-row: 1 / 2;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-
-                >#title
-                {
-                    margin: 0px 20px 0px 20px;
-                    font-size: 25px;
-                }
-
-                >#links
-                {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    
-
-                    >div
-                    {
-                        margin: 0px 20px 0px 20px;
-                    }
-                }
             }
             
             >#main
             {
                 grid-row: 2 / 3;
 
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-
+                display: grid;
+                grid-template-rows: auto minmax(min-content, max-content) minmax(min-content, max-content) minmax(min-content, max-content) minmax(min-content, max-content) auto;
+                
                 >div
                 {
-                    margin: 10px 0px 10px 0px;
+                    padding: 10px 0px 10px 0px;
                 }
-
+                
                 >#desc
                 {
-                    font-size: 30px;
-                    width:50%;
-                    text-align: center;
-
+                    grid-row: 2 / 3;
                 }
 
-                button 
+                #counter
                 {
-                    background-color: transparent;
-                    border: 2px solid $color3;
-                    font-size: 20px;
-                    padding: 10px 20px 10px 20px;
-                    margin: 0px 20px 0px 20px;
-                    border-radius: 20px;
-                    color: $color3;
+                    grid-row: 3 / 4;
                 }
-                button:focus
+
+                #letters
                 {
-                    outline: 0;
+                    grid-row: 4 / 5;
                 }
 
-                
-                input 
+                #button
                 {
-                    border: none;
-                    border-radius: 10px;
-                    padding: 5px;
-                    color: $color4;
-                }
-                input:focus
-                {
-                    outline: 0;
-                }
-
-
-            }
-        }
-
-        >#bottom
-        {
-            height:45%;
-
-            >#words
-            {
-                
-                
-                display: flex;
-                flex-wrap: wrap;
-
-                padding: 50px;
-
-
-                >div
-                {  
-                    font-size: 15px;
-                    color: $color4;
-                    width: 50px;
-                    text-align: center;
+                    grid-row: 5 / 6;
                 }
             }
         }
-
     }
 }
 
-h1,h2
-{
-    margin: 0;
-    padding: 0;
-}

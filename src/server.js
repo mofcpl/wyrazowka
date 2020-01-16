@@ -1,5 +1,6 @@
 const path = require('path')
 const express = require('express')
+const cors = require('cors')
 let bodyParser = require('body-parser');
 import "@babel/polyfill";
 
@@ -8,10 +9,12 @@ const app = express();
 const bodyParserHandler = bodyParser.urlencoded({extended: false});
 app.use(bodyParserHandler);
 app.use(bodyParser.json());
-
+app.use(cors());
 
 const DIST_DIR = __dirname;
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
+
+let dictionary = [];
 
 const compareWords = (original, tested) =>
 {
@@ -21,7 +24,7 @@ const compareWords = (original, tested) =>
     {
         if(original[i] !== tested[i] && original[i] != "") return false;
     }
-
+    
     return true;
 }
 
@@ -34,19 +37,14 @@ app.get('/', (req, res) =>
 
 const postHandler = async (req, res, next) =>
 {
-    const fs = require('fs');
-    const readline = require('readline');
-    const rl = readline.createInterface({
-        input: fs.createReadStream('dict.txt'),
-        crlfDelay: Infinity
-    });
+    let wordsFound = [];
 
-    let wordsFound = new Array();
-
-    for await (const line of rl) 
+    for await (const word of dictionary) 
     {
-        if(compareWords(req.body,line)) wordsFound.push(line.replace(/[^a-zA-Z ]/g, ""));
+        if(compareWords(req.body,word)) wordsFound.push(word);
     }
+
+    if(wordsFound.length === 0) wordsFound.push("Nie znaleziono żadnego pasującego słowa");
 
     res.json(wordsFound);
 }
@@ -55,8 +53,24 @@ app.post('/dictionary', postHandler);
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => 
+app.listen(PORT, async () => 
 {
     console.log(`App listening to ${PORT}....`);
-    console.log('Press Ctrl+C to quit.');
+
+    console.log('Loading...');
+
+    const fs = require('fs');
+    const readline = require('readline');
+    const rl = readline.createInterface({
+        input: fs.createReadStream('dict.txt'),
+        crlfDelay: Infinity
+    });
+
+    for await (const line of rl) 
+    {
+        dictionary.push(line);
+    }
+
+    console.log('Done');
+    
 })

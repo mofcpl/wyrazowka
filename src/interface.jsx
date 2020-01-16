@@ -9,7 +9,7 @@ const Desc = (props) =>
 {
     return(
         <div id="desc">
-            <div>Wybierz ilość znaków a następnie wbrowadź wybrane litery i znajdź pasujące słowa w słowniku. </div>
+            <div>Wybierz ilość znaków a następnie wprowadź wybrane litery i znajdź pasujące słowa</div>
         </div>
     )
 }
