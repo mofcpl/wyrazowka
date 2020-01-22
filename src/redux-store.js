@@ -11,6 +11,7 @@ import thunk from 'redux-thunk'
 const SET_LETTER_NUMBER = "SET_LETTER_NUMBER"
 const SET_LETTERS = "SET_LETTERS"
 const SET_WORDS = "SET_WORDS"
+const SET_STATUS = "SET_STATUS"
 
 
 ///////////////////////////////////////////////////////DEFAULT_STORE///////////////////////////////////////////////////////
@@ -19,7 +20,8 @@ const defaultState =
 {
     letterNumb: 5,
     letters: ["","","","",""],
-    words: []
+    words: [],
+    status: "READY"
 }
 
 ///////////////////////////////////////////////////////ACTION CREATORS///////////////////////////////////////////////////////
@@ -39,6 +41,11 @@ const setWords = (value) =>
     return {type: SET_WORDS, value: value}
 }
 
+const setStatus = (value) =>
+{
+    return {type: SET_STATUS, value: value}
+}
+
 ///////////////////////////////////////////////////////REDUCER///////////////////////////////////////////////////////
 
 const reducer = (state = defaultState, action) =>
@@ -49,6 +56,7 @@ const reducer = (state = defaultState, action) =>
         case SET_LETTER_NUMBER:     {return Object.assign({},state, {letterNumb: action.value});}
         case SET_WORDS:             {return Object.assign({},state, {words: action.value});}
         case SET_LETTERS:             {return Object.assign({},state, {letters: action.value});}
+        case SET_STATUS:            {return Object.assign({}, state, {status: action.value});}
         
         default: return defaultState;
     }
@@ -56,4 +64,4 @@ const reducer = (state = defaultState, action) =>
 
 const store = createStore(reducer);
 
-export {store, setLetterNumb, setWords, setLetters}
+export {store, setLetterNumb, setWords, setLetters, setStatus}

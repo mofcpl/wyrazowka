@@ -1,4 +1,5 @@
 import "@babel/polyfill";
+import $ from "jquery";
 
 import style from "./style.scss";
 
@@ -6,8 +7,8 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Provider, connect } from 'react-redux'
 
-import {store, setLetterNumb, setWords, setLetters} from "./redux-store.js"
-import {Panel, Desc, Letters, Button, Counter, Words} from "./interface.jsx"
+import {store, setLetterNumb, setWords, setLetters, setStatus} from "./redux-store.js"
+import {Panel, Desc, Letters, Button, Counter, Words, Spinner} from "./interface.jsx"
 
 class App extends React.Component
 {
@@ -18,7 +19,6 @@ class App extends React.Component
         this.handleChangeLetter = this.handleChangeLetter.bind(this);
         this.handleChangeLetterNumb = this.handleChangeLetterNumb.bind(this);
         this.handleButton = this.handleButton.bind(this);
-
         this.findWords = this.findWords.bind(this);
     }
 
@@ -31,19 +31,15 @@ class App extends React.Component
         {
             case "INCREASE":
             {
-                if(this.props.state.letters.length < 21)
-                {
-                    tempArray.push("");
-                    break;
-                }
+                console.log("dodawanie");
+                if(this.props.state.letters.length < 21) tempArray.push("");
+                break;
             }
             case "DECREASE":
             {
-                if(this.props.state.letters.length > 2)
-                {
-                    tempArray.pop();
-                    break;
-                }
+                console.log("odejmowanie");
+                if(this.props.state.letters.length > 2) tempArray.pop(); 
+                break;
             }
             default: break;
         }
@@ -66,24 +62,25 @@ class App extends React.Component
 
     async findWords(word)
     {
+        this.props.submitSetStatus("LOADING");
+
         const response = await fetch("http://localhost:8080/dictionary", 
         {
             headers: {"Content-type": "application/json; charset=UTF-8"},
             method: "post", 
             body: JSON.stringify(this.props.state.letters)
         });
+        
         const data = await response.json();
         this.props.submitSetWords(data);
+
+        this.props.submitSetStatus("READY");
+        $([document.documentElement, document.body]).animate({scrollTop: $("#bottom").offset().top}, 1000);
     }
 
     handleButton()
     {
-        if(this.props.state.letters.join("").length !== 0)
-        {
-            this.findWords();
-            console.log("finding");
-
-        } 
+        if(this.props.state.letters.join("").length !== 0) this.findWords();
     }
 
     render()
@@ -98,6 +95,7 @@ class App extends React.Component
                     <Letters handle={this.handleChangeLetter} data={this.props.state.letters} />
                     <Button handle={this.handleButton} />
                 </div>
+                <Spinner data={this.props.state.status} />
             </div>
 
             <Words data={this.props.state.words} />
@@ -116,7 +114,8 @@ const mapDispatchToProps = (dispatch) =>
     return {
         submitSetLetterNumb: (value) =>           {dispatch(setLetterNumb(value))},
         submitSetWords: (value) =>                {dispatch(setWords(value))},
-        submitSetLetters: (value) =>              {dispatch(setLetters(value))}
+        submitSetLetters: (value) =>              {dispatch(setLetters(value))},
+        submitSetStatus: (value) =>               {dispatch(setStatus(value))}
     }
 }
 

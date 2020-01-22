@@ -70,3 +70,18 @@ body
     }
 }
 
+@media (max-width: 768px) 
+{
+    body::-webkit-scrollbar 
+    {
+        display: none;
+    }
+    #top
+    {
+        height: 100vh !important;
+    }
+    #bottom
+    {
+        height: 90vh !important;
+    }
+}

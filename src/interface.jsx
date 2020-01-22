@@ -75,4 +75,29 @@ const Panel = (props) =>
     )
 }
 
-export {Desc, Letters, Button, Counter, Words, Panel}
+const Spinner = (props) =>
+{
+    let tempDiv;
+    
+    switch(props.data)
+    {
+        case "READY":
+        {
+            tempDiv = <div></div>;
+            break;
+        }
+        case "LOADING":
+        {
+            tempDiv = 
+            <div id="loading">
+                <div id="spinner"></div>
+            </div>;
+            break;
+        }
+        default: break;
+    }
+    return tempDiv;
+
+}
+
+export {Desc, Letters, Button, Counter, Words, Panel, Spinner}
