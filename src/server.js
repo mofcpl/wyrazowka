@@ -1,20 +1,17 @@
-const path = require('path')
-const express = require('express')
-const cors = require('cors')
-let bodyParser = require('body-parser');
 import "@babel/polyfill";
 
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
 
-const app = express();
 
-const bodyParserHandler = bodyParser.urlencoded({extended: false});
-app.use(bodyParserHandler);
-app.use(bodyParser.json());
-app.use(cors());
+const server = http.createServer();
 
-const DIST_DIR = __dirname;
-const HTML_FILE = path.join(DIST_DIR, 'index.html');
+const port = process.env.PORT || 3000;
 
+let mainPage = "";
+let script = "";
+let stylesheet = "";
 let dictionary = [];
 
 const compareWords = (original, tested) =>
@@ -29,38 +26,90 @@ const compareWords = (original, tested) =>
     return true;
 }
 
-app.use(express.static(DIST_DIR));
-
-app.get('/', (req, res) => 
+const loadFile = (file) =>
 {
-    res.sendFile(HTML_FILE);
-})
-
-const postHandler = async (req, res, next) =>
-{
-    let wordsFound = [];
-
-    for await (const word of dictionary) 
+    console.log(`Wczytywanie ${file}...`);
+    let tempFile = '';
+    try
     {
-        if(compareWords(req.body,word)) wordsFound.push(word);
+        tempFile = fs.readFileSync(path.join(__dirname, file));
     }
-
-    if(wordsFound.length === 0) wordsFound.push("Nie znaleziono żadnego pasującego słowa");
-
-    res.json(wordsFound);
+    catch(err)
+    {
+        console.log(`Nie udało się wczytac pliku ${file}. Błąd: ${err}`)
+        process.exit();
+    }
+    console.log("Gotowe");
+    return tempFile;
 }
 
-app.post('/dictionary', postHandler);
-
-const PORT = process.env.PORT || 8080;
-
-app.listen(PORT, async () => 
+server.addListener('request',  (req, res) => 
 {
-    console.log(`App listening to ${PORT}....`);
+    switch(req.url)
+    {
+        case '/':
+        {
+            res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+            res.write(mainPage);
+            res.end();
+            break;
+        }
+        case '/index.js':
+        {
+            res.writeHead(200, {'Content-Type': 'application/javascript; charset=utf-8'});
+            res.write(script);
+            res.end();
+            break;
+        }
+        case '/main.css':
+        {
+            res.writeHead(200, {'Content-Type': 'text/css; charset=utf-8'});
+            res.write(stylesheet);
+            res.end();
+            break;
+        }
+        case '/dictionary':
+        {
+            let body = '';
+            req.on('data', chunk => {
+                body += chunk.toString(); // convert Buffer to string
+            });
+            
+            req.on('end', async () => 
+            {
+                const wordJson = JSON.parse(body);
 
-    console.log('Loading...');
+                let wordsFound = [];
+                for await (const word of dictionary) 
+                {
+                    if(compareWords(wordJson,word)) wordsFound.push(word);
+                }
+                
+                if(wordsFound.length === 0) wordsFound.push("Nie znaleziono żadnego pasującego słowa");
+            
+                res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
+                res.write(JSON.stringify(wordsFound));
+                res.end();
 
-    const fs = require('fs');
+            });
+
+            break;
+        }
+
+        default: break;
+    }
+
+})
+
+server.listen(port, '127.0.0.1', async () => 
+{
+    console.log("Nasłuchiwanie na porcie: "+ port+"...")
+    
+    stylesheet = loadFile('main.css');
+    script = loadFile('index.js');
+    mainPage = loadFile('index.html');
+
+    console.log('Wczytywanie słownika...');
     const readline = require('readline');
     const rl = readline.createInterface({
         input: fs.createReadStream('dict.txt'),
@@ -71,7 +120,6 @@ app.listen(PORT, async () =>
     {
         dictionary.push(line);
     }
+    console.log("Gotowe")
 
-    console.log('Done');
-    
-})
+});

@@ -64,7 +64,7 @@ class App extends React.Component
     {
         this.props.submitSetStatus("LOADING");
 
-        const response = await fetch("http://localhost:8080/dictionary", 
+        const response = await fetch("http://localhost:3000/dictionary", 
         {
             headers: {"Content-type": "application/json; charset=UTF-8"},
             method: "post", 

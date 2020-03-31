@@ -13,7 +13,7 @@ module.exports =
     {
         path: path.join(__dirname, 'dist'),
         publicPath: '/',
-        filename: '[name].js'
+        filename: 'index.js'
     },
     target: 'web',
     devtool: 'source-map',
