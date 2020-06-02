@@ -7,7 +7,7 @@ const path = require('path');
 
 const server = http.createServer();
 
-const port = process.env.PORT || 3000;
+const port = 3001;
 
 let mainPage = "";
 let script = "";
