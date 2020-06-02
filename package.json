@@ -7,6 +7,7 @@
     "buildDev": "rmdir /s /q dist && webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
     "startClient": "webpack-dev-server --mode development --config webpack.dev.config.js --open",
     "buildProd": "rmdir /s /q dist && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js",
+    "buildProdLinux": "rm -rf dist && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js",
     "start": "node ./dist/server.js"
   },
   "keywords": [],

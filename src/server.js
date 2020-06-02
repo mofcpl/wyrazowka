@@ -45,8 +45,10 @@ const loadFile = (file) =>
 
 server.addListener('request',  (req, res) => 
 {
+    
     switch(req.url)
     {
+        //req.method === "GET"
         case '/':
         {
             res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
@@ -68,6 +70,7 @@ server.addListener('request',  (req, res) =>
             res.end();
             break;
         }
+        //req.method === "POST"
         case '/dictionary':
         {
             let body = '';
