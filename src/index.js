@@ -2,6 +2,7 @@ import "@babel/polyfill";
 import $ from "jquery";
 
 import style from "./style.scss";
+import "./fontello/css/fontello.css"
 
 import React, { Component } from "react";
 import ReactDOM from "react-dom";

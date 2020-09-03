@@ -54,19 +54,33 @@ module.exports =
                 ]
             },
             {
-                // Loads images into CSS and Javascript files
-                test: /\.jpg$/,
-                use: [{ loader: "url-loader" }]
+                test: /\.css$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader'
+                ]
             },
             {
-                test: /\.(css|scss)$/,
-                use: [ 'style-loader', 
-                    MiniCssExtractPlugin.loader, 
-                    {
-                        loader: 'css-loader',
-                    },
-                    { loader: 'postcss-loader', options: { config: { path: 'src/postcss-config/' }}},
-                    'sass-loader']
+                test: /\.scss$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'sass-loader'
+                ]
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                loader: 'file-loader',
+                options: {
+                  outputPath: 'images',
+                },
+              },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                loader: 'file-loader',
+                options: {
+                  outputPath: 'fonts',
+                },
             },
             
         ]

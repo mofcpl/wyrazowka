@@ -1,6 +1,12 @@
 
 @import 'palette';
 
+a, a:hover, a:visited
+{
+    text-decoration: none;
+    color: white;
+}
+
 body
 {
     width: 100vw;

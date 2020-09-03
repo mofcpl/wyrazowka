@@ -3,3 +3,4 @@ dist
 package-lock.json
 dict.txt
 src/server-old.js
+src/fontello/

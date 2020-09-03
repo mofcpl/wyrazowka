@@ -67,9 +67,14 @@ const Panel = (props) =>
                 <div>Wyrazówka</div>
             </div>
             <div id="links">
-                <div>linked</div>
-                <div>homepage</div>
-                <div>github</div>
+                <a className="text" href="https://pl.linkedin.com/in/zbrogdom" target="_blank">linkedin</a>
+                <a className="icon" href="https://pl.linkedin.com/in/zbrogdom" target="_blank"><i className="icon-linkedin-squared"></i></a>
+
+                <a className="text" href="https://zbrogdom.pl" target="_blank">homepage</a>
+                <a className="icon" href="https://zbrogdom.pl" target="_blank"><i className="icon-home"></i></a>
+
+                <a className="text" href="https://github.com/mofcpl/wyrazowka" target="_blank">github</a>
+                <a className="icon" href="https://github.com/mofcpl/wyrazowka" target="_blank"><i className="icon-github-circled"></i></a>
             </div>
         </div>
     )
