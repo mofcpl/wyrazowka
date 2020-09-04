@@ -2,7 +2,6 @@ const path = require("path")
 const HtmlWebPackPlugin = require("html-webpack-plugin")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin")
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 module.exports = 
 {
     entry: 
@@ -16,7 +15,6 @@ module.exports =
         filename: 'index.js'
     },
     target: 'web',
-    devtool: 'source-map',
     // Webpack 4 does not have a CSS minifier, although
     // Webpack 5 will likely come with one
     optimization: 
@@ -25,9 +23,8 @@ module.exports =
             new UglifyJsPlugin({
                 cache: true,
                 parallel: true,
-                sourceMap: true // set to true if you want JS source maps
+                sourceMap: false // set to true if you want JS source maps
             }),
-            new OptimizeCSSAssetsPlugin({})
         ]
     },
     module: 
@@ -57,7 +54,8 @@ module.exports =
                 test: /\.css$/,
                 use: [
                     MiniCssExtractPlugin.loader,
-                    'css-loader'
+                    'css-loader',
+                    'postcss-loader'
                 ]
             },
             {
@@ -65,22 +63,18 @@ module.exports =
                 use: [
                     MiniCssExtractPlugin.loader,
                     'css-loader',
-                    'sass-loader'
+                    'sass-loader',
+                    'postcss-loader'
                 ]
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
-                loader: 'file-loader',
-                options: {
-                  outputPath: 'images',
-                },
-              },
+                loader: 'url-loader',
+            },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
-                loader: 'file-loader',
-                options: {
-                  outputPath: 'fonts',
-                },
+                loader: 'url-loader',
+
             },
             
         ]
@@ -90,9 +84,6 @@ module.exports =
             template: "./src/index.html",
             filename: "./index.html"
         }),
-        new MiniCssExtractPlugin({
-            filename: "[name].css",
-            chunkFilename: "[id].css"
-        })
+        new MiniCssExtractPlugin()
     ]
 }
