@@ -1,4 +1,4 @@
-import "@babel/polyfill";
+require("babel-polyfill");
 import $ from "jquery";
 
 import style from "./style.scss";
